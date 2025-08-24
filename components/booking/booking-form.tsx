@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, Clock, Phone, Mail, Smartphone } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface Service {
   id: string;
@@ -75,6 +76,7 @@ const phoneModels = [
 ];
 
 export function BookingForm({ service }: BookingFormProps) {
+  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string>();
   const [formData, setFormData] = useState({
@@ -95,34 +97,58 @@ export function BookingForm({ service }: BookingFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    try {
+      const payload = {
+        service: service.title,
+        date: selectedDate?.toISOString(),
+        time: selectedTime,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        deviceModel: formData.deviceModel,
+        deviceCondition: formData.deviceCondition,
+        notes: formData.notes,
+      };
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      const res = await fetch(`/api/bookings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    console.log("[v0] Booking submitted:", {
-      service: service.title,
-      date: selectedDate,
-      time: selectedTime,
-      customer: formData,
-    });
+      if (!res.ok) {
+        const err = await res.json().catch(() => null);
+        toast.error(err?.error || "Failed to create booking");
+      } else {
+        const data = await res.json();
+        toast.success("Booking created. Redirecting to confirmation...");
 
-    toast.success(
-      "Booking confirmed! We'll send you a confirmation email shortly."
-    );
-    setIsSubmitting(false);
-
-    // Reset form
-    setSelectedDate(undefined);
-    setSelectedTime(undefined);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      deviceModel: "",
-      deviceCondition: "",
-      notes: "",
-    });
+        // Navigate to confirmation page with booking id
+        const bookingId = data?.id;
+        if (bookingId) {
+          router.push(`/bookings/confirmed?bookingId=${bookingId}`);
+        } else {
+          // Fallback: reset form
+          setSelectedDate(undefined);
+          setSelectedTime(undefined);
+          setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            deviceModel: "",
+            deviceCondition: "",
+            notes: "",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Booking submit error:", error);
+      toast.error("An unexpected error occurred. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isFormValid =
