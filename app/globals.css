@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .base-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--sides);
+  }
+
+  .base-gap {
+    gap: var(--sides);
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --background: 334 62% 100%;
+    --foreground: 334 55% 1%;
+    --muted: 334 35% 95%;
+    --muted-foreground: 334 9% 37%;
+    --popover: 334 62% 100%;
+    --popover-foreground: 334 55% 1%;
+    --card: 334 62% 100%;
+    --card-foreground: 334 55% 1%;
+    --border: 334 5% 95%;
+    --input: 334 5% 95%;
+    --primary: 334 44% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 334 11% 90%;
+    --secondary-foreground: 334 11% 30%;
+    --accent: 334 20% 82%;
+    --accent-foreground: 334 20% 22%;
+    --destructive: 18 93% 23%;
+    --destructive-foreground: 18 93% 83%;
+    --ring: 334 44% 52%;
+    --chart-1: 334 44% 52%;
+    --chart-2: 334 11% 90%;
+    --chart-3: 334 20% 82%;
+    --chart-4: 334 11% 93%;
+    --chart-5: 334 47% 52%;
+    --radius: 0.5rem;
+    --sides: 1rem;
+    --modal-sides: 0.75rem;
+    --top-spacing: 5rem;
+    --height-fold: 100vh;
+    --height-fold: 100svh;
+  }
+
+  .dark {
+    --background: 217.5 9.09% 17.25%;
+    --foreground: 334 34% 98%;
+    --muted: 210 9.09% 12.94%;
+    --muted-foreground: 334 0% 60.77%;
+    --popover: 210 9.09% 12.94%;
+    --popover-foreground: 334 34% 98%;
+    --card: 210 9.09% 12.94%;
+    --card-foreground: 334 34% 98%;
+    --border: 334 0% 18.46%;
+    --input: 214.29 5.04% 27.25%;
+    --primary: 226.73 58.43% 65.1%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214.29 5.04% 27.25%;
+    --secondary-foreground: 334 0% 100%;
+    --accent: 217.5 9.09% 17.25%;
+    --accent-foreground: 226.73 58.43% 65.1%;
+    --destructive: 0 86.89% 48.16%;
+    --destructive-foreground: 0 0% 0%;
+    --ring: 217.5 9.09% 17.25%;
+    --chart-1: 226.73 58.43% 65.1%;
+    --chart-2: 214.29 5.04% 27.25%;
+    --chart-3: 217.5 9.09% 17.25%;
+    --chart-4: 214.29 5.04% 30.25%;
+    --chart-5: 226.73 61.43% 65.1%;
+  }
+
+  @screen md {
+    :root {
+      --sides: 1.5rem;
+      --modal-sides: 1rem;
+      --top-spacing: 9rem;
+    }
+
+    @screen lg {
+      :root {
+        --modal-sides: 1.5rem;
+      }
+    }
+  }
+}
+
+@layer components {
+  /* Header overlay helper: used when header sits on a dark hero image */
+  .header-overlay-nav {
+    /* stronger overlay for readability */
+    @apply bg-foreground/60 backdrop-blur-lg shadow-md px-3 py-1 rounded-md;
+  }
+
+  .header-overlay-link {
+    /* ensure links are bright and readable on overlay */
+    @apply text-primary-foreground font-semibold drop-shadow;
+  }
+
+  /* class applied to header element on top of hero */
+  .header-on-hero {
+    @apply bg-transparent;
+  }
+
+  /* Slightly stronger muted text for better contrast */
+  .muted-strong {
+    color: hsl(var(--muted-foreground));
+    opacity: 0.95;
+  }
+}
+
+html,
+body,
+* {
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+}
+
+/* @media (min-width: 1028px) {
+  html {
+    font-size: 0.7em;
+  }
+} */
+
+/* @media (min-width: 1240px) and (max-width: 1919px) {
+  html {
+    font-size: 0.85em;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 1em;
+  }
+}
+
+@media (min-width: 2160px) {
+  html {
+    font-size: 1.2em;
+  }
+} */
