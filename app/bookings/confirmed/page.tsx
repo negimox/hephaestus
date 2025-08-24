@@ -7,13 +7,12 @@ import dynamic from "next/dynamic";
 
 const BookingConfetti = dynamic(() => import("@/components/booking/confetti"));
 
-interface Props {
-  searchParams?: Promise<{ bookingId?: string }> | { bookingId?: string };
-}
-
-export default async function BookingConfirmedPage({ searchParams }: Props) {
-  const resolved = await Promise.resolve(searchParams);
-  const id = resolved?.bookingId;
+export default async function BookingConfirmedPage({
+  searchParams,
+}: {
+  searchParams?: any;
+}) {
+  const id = searchParams?.bookingId as string | undefined;
 
   return (
     <PageLayout>

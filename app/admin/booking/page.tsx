@@ -12,8 +12,13 @@ import {
 import Link from "next/link";
 
 async function fetchBookings() {
-  const host = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const res = await fetch(`${host}/api/bookings`, { cache: "no-store" });
+  // Use NEXT_PUBLIC_SITE_URL if set (for local preview or custom domain).
+  // Otherwise use a relative path so server-side fetch resolves correctly on the deployment platform.
+  const base = process.env.NEXT_PUBLIC_SITE_URL
+    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
+    : "";
+  const url = `${base}/api/bookings`;
+  const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) {
     throw new Error("Failed to fetch bookings");
   }
