@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ALL_SERVICES, SERVICE_CATEGORIES } from "@/lib/services";
 
 export const metadata: Metadata = {
-  title: "PhoneFix Pro | All Repair Services",
+  title: "ACME | All Repair Services",
   description:
     "Complete list of professional mobile phone repair services. Screen replacement, battery repair, water damage recovery, and more with expert technicians.",
 };
